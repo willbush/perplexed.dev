@@ -1,0 +1,3 @@
+* perplexed.dev blog
+
+  Setting up my first blog. This is a work in progress.
