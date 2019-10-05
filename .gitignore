@@ -1,0 +1,9 @@
+# hakyll
+/_cache
+/_site
+
+# cabal
+/dist-newstyle
+
+# hasktags
+TAGS
