@@ -6,6 +6,7 @@ mkDerivation {
   isLibrary = false;
   isExecutable = true;
   executableHaskellDepends = [ base hakyll ];
-  license = "unknown";
-  hydraPlatforms = stdenv.lib.platforms.none;
+  homepage = "www.perplexed.dev";
+  description = "Will Bush blog";
+  license = stdenv.lib.licenses.mit;
 }
