@@ -1,3 +1,21 @@
 * perplexed.dev blog
 
   Setting up my first blog. This is a work in progress.
+
+** Building and Running
+
+*** Get Build Tools
+
+    Either get nix to automatically pull in all the dependencies including the
+    compiler:
+
+    1. Get nix: https://nixos.org/nix/
+    2. Enter a nix shell ~nix-shell~ in the root of this project.
+
+    Or follow this guide to install either Cabal and GHC or Stack (which will
+    pull the correct GHC version): https://www.haskell.org/platform/
+
+*** Build and Run
+
+    1. Build and Run with ~cabal new-run site watch~
+    2. Visit ~localhost:8000~
