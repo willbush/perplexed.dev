@@ -1,11 +1,16 @@
+{ pkgs ? import ./nix { } }:
 let
-  pinnedPkgs = import ./nix/pkgs-from-json.nix { json = ./nix/nixos-unstable.json; };
-  myPackages = (import ./nix/release.nix { withHoogle = true; } );
+  hsPkgs = import ./default.nix { inherit pkgs; };
+in hsPkgs.shellFor {
+  # Include only the local packages of this project.
+  packages = ps: with ps; [ perplexed-dev ];
 
-  projectDrvEnv = myPackages.project1.env.overrideAttrs (oldAttrs: rec {
-    buildInputs = oldAttrs.buildInputs ++ [
-      pinnedPkgs.haskellPackages.cabal-install
-    ];
-  });
-in
-  projectDrvEnv
+  # When true this builds a Hoogle documentation index of all dependencies, and
+  # provides a "hoogle" command to search the index.
+  withHoogle = true;
+
+  buildInputs = with pkgs; [
+    haskell.compiler.ghc865
+    haskellPackages.cabal-install
+  ];
+}

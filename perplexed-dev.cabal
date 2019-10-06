@@ -13,7 +13,7 @@ maintainer:    will.g.bush@gmail.com
 executable site
   main-is:          site.hs
   build-depends:    base == 4.*
-                  , hakyll == 4.13.*
+                  , hakyll == 4.12.*
   default-language: Haskell2010
   ghc-options:
     -threaded

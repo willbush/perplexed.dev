@@ -3,7 +3,9 @@
 /_site
 
 # cabal
+/dist
 /dist-newstyle
+/.ghc.environment.*
 
 # hasktags
 TAGS
