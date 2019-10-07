@@ -1,5 +1,7 @@
 * perplexed.dev blog
 
+  [[https://travis-ci.org/willbush/perplexed.dev][https://travis-ci.org/willbush/perplexed.dev.svg?branch=master]]
+
   Setting up my first blog. This is a work in progress.
 
 ** Building and Running
