@@ -1,0 +1,25 @@
+os:
+- linux
+language: nix
+nix: 2.2.1
+env:
+  global:
+  - secure: nL+J7W23cl6cGTrunA7fBc0CPwrcSigk80zbwdBM2Gr3X6tqsG5oXaiRj6BB0BYumIhaakoXzCs9Vgjbmbl8BOV55rNmdWwVtlXDHbc2gPAVL+CRHQVaEwupsCTCQPdaZDNv5v/ZrOdoDM1cvsNDU9IaW6YxKperq2tR5oeTpiBifO32uz0LvUlmdxCv+M0wSBGLEAcWwr+vEl497naK9aZt0ibr6cFqIe37cLoPMBaDM5SaZUOQWoDYjgLY0QnX2MxYGYqNkNHNuFvMxpGnkt/1/gWffJvl602mW6+gD/EFjLLCN5qHL/DwkS4ekfTStugbLb370p7r1csJQrvei+7Jp8cyWV6u9G8Wi5uDfENw9ugirX+4vSccBgQe6P12YbFyeOhcl2x2DdN0FT9xrnFY2h4Giazqlqu5oswnqdXsKixeMNdYLE8CLMwLjqGAqxSBsbN1hq/eg/iUJo3ELQosb4HZCtdCNRjH4WPfL4gW46SAwyUmDZjIRmliU7/SCWpm1O4KLHc2gXlBOvFm9pmjkCqtxM7g+HxJuKZz8i49TcGojp2/Ramov8WjKJjShDy8bT2mZxgJQA6nYKQfCcOgBrFsvmf3ORSx4yz3wzHXM1ZU5/vTvFDi4JRdbYHGt6C5IqAlDMnWf8Q8TjDVRQVU9fRBS0C5fnGe1197ozY=
+  - secure: iwJEEnCONTQ5sFQ1Osgc6lM8ZWGU2Q3MvYKvItplRnBcjc8gcurJSiMYSzmM3sALcRw9mBz2UVWMvZQvq8U95q1NWVy+UtaY7uAiT69m3BI0KjJX1bVKQ2d/T9jpkYLtrzh+YAnJA0jb9VXlrIl2gXvUwegSluvhnqqYp5zQkWO+dc3s1bpez30D4BKd6P8bWUnxuNeqHOCrCIr4WoMxXwcL8TwJo9s7DTyGj8mJziEXlag26ZVTzfg2QG/tA8OEcGj0Y2tQzLRnqnta+dms46+3e2i1GbiUqqoDfch7DMBGmt7O5QJNeDekzkznHkMP9nVNv6HsA5fZ80Wh1CqI+pRASUXHN9PoiFBTvqh/SeLKgr9IjvMLVW5nTfr/Af/Q23nhWqnlezoA7V9SkRLnIhrMNk9turzzjnuJsbat+D3vG+Mr8nF2kF4V6mUVhF30xjOkh/BuIf8KgjIaycw328LMyZkxzjw5HZAUYeOcYl1cbhLoD8TDTyb2ZnGafPm/3lPKdGWyRYldJetHcwx5eyvcjuN1TdlbWaXiqE3zNe9zAUYLhGYCZwlnDr58E/UShqp7+tL4Y1FNjao63r1XmOLQCgy+WSLNzyy4OjD9J2rMzQSEi3JM376mc82bqyeheLJVcxTA55YHrDo3hIMS6PwKA28/5iuO0lSTMb0WGxI=
+jobs:
+  include:
+  - stage: build site
+    script:
+    - nix-env -iA cachix -f https://cachix.org/api/v1/install
+    - cachix use willbush
+    - cachix push willbush --watch-store&
+    - nix-build -A site -o site
+    deploy:
+      provider: pages
+      skip_cleanup: true
+      github_token: "$GITHUB_TOKEN"
+      keep_history: true
+      target_branch: gh-pages
+      local_dir: site
+      on:
+        tags: true

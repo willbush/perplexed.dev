@@ -1,6 +1,6 @@
 { pkgs ? import ./nix { } }:
 let
-  hsPkgs = import ./default.nix { inherit pkgs; };
+  hsPkgs = (import ./default.nix { inherit pkgs; }).hsPkgs;
 in hsPkgs.shellFor {
   # Include only the local packages of this project.
   packages = ps: with ps; [ perplexed-dev ];

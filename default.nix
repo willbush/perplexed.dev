@@ -8,5 +8,10 @@ let
     pkg-def-extras = [ ];
     modules = [ ];
   };
-
-in pkgSet.config.hsPkgs
+in {
+  hsPkgs = pkgSet.config.hsPkgs;
+  site = import ./nix/site.nix {
+    nixpkgs = pkgs;
+    hspkgs = pkgSet.config.hsPkgs;
+  };
+}
