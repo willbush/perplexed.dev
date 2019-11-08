@@ -1,141 +1,235 @@
-html {
-  font-size: 62.5%;
+:root {
+  --purple: #B10DC9;
+  --darkpurple: #9106A7;
+  --fuchsia: #F012BE;
+  --block-bg-color: #F9F3F3;
+  --border-color1: #E8E8E8;
+  --border-color2: #CCC;
 }
 
-body {
-  font-size: 1.6rem;
-  color: #000;
+html {
+  /* This could be in the body, but dark reader does a better job shifting the
+   colors when it's in the html for some reason. */
+  background-color: #FFFAFA;
 }
 
 header {
-  border-bottom: 0.2rem solid #000;
+  border-bottom: 1px solid var(--purple);
 }
 
-nav {
-  text-align: right;
-}
-
-nav a {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: black;
-  text-decoration: none;
-  text-transform: uppercase;
-}
-
-footer {
-  margin-top: 3rem;
-  padding: 1.2rem 0;
-  border-top: 0.2rem solid #000;
-  font-size: 1.2rem;
-  color: #555;
-}
-
-h1 {
-  font-size: 2.4rem;
-}
-
-h2 {
-  font-size: 2rem;
-}
-
-article .header {
-  font-size: 1.4rem;
+article .tags, article .info {
+  font-size: 1rem;
   font-style: italic;
   color: #555;
 }
 
-.logo a {
+body {
+  max-width: 960px;
+  padding: 1em;
+  margin: auto;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  line-height: 1.5em;
+}
+
+footer {
+  margin-top: 3rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--purple);
+  font-size: 1rem;
+  color: #555;
+}
+
+a {
+  text-decoration: none;
+  color: steelblue;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #225E8F;
+}
+
+h1, h2, h3, h4 {
+  line-height: 1.2em;
   font-weight: bold;
-  color: #000;
+  margin: 30px 0 20px 0;
+}
+
+h1 {
+  font-size: 32px;
+  margin: 1.5em 0em 0em 0em;
+}
+
+h2 { font-size: 28px; }
+
+h2.subtitle {
+  color: #5B5B5B;
+  font-weight: 400;
+  font-style: italic;
+  margin: 0.5em 0em 1.5em 0em;
+}
+
+h3 { font-size: 24px; }
+h4 { font-size: 20px; }
+
+hr {
+  border: 1px solid var(--border-color1);
+}
+
+dl {
+  overflow: hidden;
+}
+
+dt {
+  float: left;
+  font-weight: bold;
+  margin-right: 10px;
+  text-align: right;
+  width: 20%;
+}
+
+dt::after {
+  content: ": ";
+}
+
+dd {
+  float: left;
+  width: 70%;
+  padding-bottom: 20px;
+}
+
+nav {
+  padding: 0em 0em 1em 0em;
+  text-align: right;
+  word-spacing: 0.5em;
+}
+
+nav a {
+  text-decoration: none;
+  font-family: 'Fira Code', monospace;
+  font-size: 20px;
+  color: black;
+  text-transform: uppercase;
+  border-bottom: 3px solid transparent;
+}
+
+nav a:hover {
+  border-bottom: 2px solid var(--purple);
+  color: black;
   text-decoration: none;
 }
 
-@media (max-width: 319px) {
-  body {
-    width: 90%;
-    margin: 0;
-    padding: 0 5%;
-  }
-  header {
-    margin: 4.2rem 0;
-  }
-  nav {
-    margin: 0 auto 3rem;
-    text-align: center;
-  }
-  footer {
-    text-align: center;
-  }
-  .logo {
-    text-align: center;
-    margin: 1rem auto 3rem;
-  }
-  .logo a {
-    font-size: 2.4rem;
-  }
-  nav a {
-    display: block;
-    line-height: 1.6;
-  }
+.logo {
+  float: left;
+  word-spacing: normal;
 }
 
-@media (min-width: 320px) {
-  body {
-    width: 90%;
-    margin: 0;
-    padding: 0 5%;
-  }
-  header {
-    margin: 4.2rem 0;
-  }
-  nav {
-    margin: 0 auto 3rem;
-    text-align: center;
-  }
-  footer {
-    text-align: center;
-  }
-  .logo {
-    text-align: center;
-    margin: 1rem auto 3rem;
-  }
-  .logo a {
-    font-size: 2.4rem;
-  }
-  nav a {
-    display: inline;
-    margin: 0 0.6rem;
-  }
+#bind {
+  color: var(--fuchsia);
 }
 
-@media (min-width: 640px) {
-  body {
-    width: 60rem;
-    margin: 0 auto;
-    padding: 0;
-  }
-  header {
-    margin: 0 0 3rem;
-    padding: 1.2rem 0;
-  }
-  nav {
-    margin: 0;
-    text-align: right;
-  }
-  nav a {
-    margin: 0 0 0 1.2rem;
-    display: inline;
-  }
-  footer {
-    text-align: right;
-  }
-  .logo {
-    margin: 0;
-    text-align: left;
-  }
-  .logo a {
-    float: left;
-    font-size: 1.8rem;
-  }
+blockquote {
+  font-style: italic;
+  background: var(--block-bg-color);
+  border: 1px solid var(--border-color1);
+  border-radius: 5px;
+  border-left: 2px solid var(--purple);
+  margin: 1.5em 1em;
+  padding: 1px 16px 1px 16px;
+}
+
+code {
+  font-size: 0.8em;
+  font-family: 'Fira Code', monospace;
+  font-variant-ligatures: none;
+  background: var(--block-bg-color);
+  border: 1px solid var(--border-color1);
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+pre.sourceCode,
+pre.text {
+  background: var(--block-bg-color);
+  border: 1px solid var(--border-color1);
+  border-radius: 5px;
+  line-height: 1.3rem;
+  overflow: auto;
+  padding: 10px 20px;
+}
+
+pre.sourceCode code,
+pre.text code {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.note {
+  border: 2px dashed var(--purple);
+  border-radius: 5px;
+  padding: 0 20px 0;
+}
+
+.note>p:first-child::before {
+  content: "Note: ";
+  font-size: 21px;
+  font-weight: bold;
+}
+
+section.footnotes::before {
+  content: "Footnotes";
+  display: block;
+  font-size: 21px;
+  font-style: italic;
+  font-variant: small-caps;
+  font-weight: 400;
+  margin-top: 30px;
+}
+
+div.table {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+tr {
+  background-color: var(--block-bg-color);
+  border: 1px solid var(--border-color2);
+  padding: 6px;
+}
+
+th, td {
+  padding: 6px;
+  text-align: left;
+}
+
+th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .logo { display: none; }
+  nav   { text-align: center; }
+  body  { font-size: 16px; }
+  h1    { font-size: 28px; }
+  h2    { font-size: 24px; }
+  h3    { font-size: 20px; }
+  h4    { font-size: 16px; }
 }
