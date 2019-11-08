@@ -10,3 +10,6 @@
 
 # hasktags
 TAGS
+
+# nix site build
+/site
