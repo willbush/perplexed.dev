@@ -1,6 +1,5 @@
 :root {
   --purple: #B10DC9;
-  --darkpurple: #9106A7;
   --fuchsia: #F012BE;
   --block-bg-color: #F9F3F3;
   --border-color1: #E8E8E8;
@@ -9,8 +8,9 @@
 
 html {
   /* This could be in the body, but dark reader does a better job shifting the
-   colors when it's in the html for some reason. */
+   colors when it's here for some reason. */
   background-color: #FFFAFA;
+  font-size: 18px;
 }
 
 header {
@@ -18,7 +18,7 @@ header {
 }
 
 article .tags, article .info {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-style: italic;
   color: #555;
 }
@@ -28,7 +28,6 @@ body {
   padding: 1em;
   margin: auto;
   font-family: 'Open Sans', sans-serif;
-  font-size: 18px;
   line-height: 1.5em;
 }
 
@@ -36,7 +35,7 @@ footer {
   margin-top: 3rem;
   padding: 1rem 0;
   border-top: 1px solid var(--purple);
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #555;
 }
 
@@ -57,11 +56,11 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-  font-size: 32px;
+  font-size: 1.8rem;
   margin: 1.5em 0em 0em 0em;
 }
 
-h2 { font-size: 28px; }
+h2 { font-size: 1.6rem; }
 
 h2.subtitle {
   color: #5B5B5B;
@@ -70,8 +69,8 @@ h2.subtitle {
   margin: 0.5em 0em 1.5em 0em;
 }
 
-h3 { font-size: 24px; }
-h4 { font-size: 20px; }
+h3 { font-size: 1.4rem; }
+h4 { font-size: 1.2rem; }
 
 hr {
   border: 1px solid var(--border-color1);
@@ -140,7 +139,7 @@ blockquote {
 }
 
 code {
-  font-size: 0.8em;
+  font-size: 0.8rem;
   font-family: 'Fira Code', monospace;
   font-variant-ligatures: none;
   background: var(--block-bg-color);
@@ -177,7 +176,7 @@ img {
 }
 
 .note {
-  border: 2px dashed var(--purple);
+  border: 1px solid var(--purple);
   border-radius: 5px;
   padding: 0 20px 0;
 }
@@ -191,7 +190,7 @@ img {
 section.footnotes::before {
   content: "Footnotes";
   display: block;
-  font-size: 21px;
+  font-size: 1.2rem;
   font-style: italic;
   font-variant: small-caps;
   font-weight: 400;
@@ -227,9 +226,5 @@ th {
 @media (max-width: 640px) {
   .logo { display: none; }
   nav   { text-align: center; }
-  body  { font-size: 16px; }
-  h1    { font-size: 28px; }
-  h2    { font-size: 24px; }
-  h3    { font-size: 20px; }
-  h4    { font-size: 16px; }
+  html  { font-size: 16px; }
 }
