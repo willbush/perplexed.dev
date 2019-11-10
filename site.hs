@@ -19,6 +19,9 @@ main = hakyll $ do
       >>= loadAndApplyTemplate "templates/default.html" defaultContext
       >>= relativizeUrls
 
+  tags <- buildTags "posts/*" (fromCapture "tags/*.html")
+  let postCtx = mkPostCtx tags
+
   match "posts/*" $ do
     route $ setExtension "html"
     compile
@@ -27,6 +30,19 @@ main = hakyll $ do
       >>= loadAndApplyTemplate "templates/post.html"    postCtx
       >>= loadAndApplyTemplate "templates/default.html" postCtx
       >>= relativizeUrls
+
+  tagsRules tags $ \tag postPattern -> do
+    route idRoute
+    compile $ do
+      posts <- recentFirst =<< loadAll postPattern
+      let ctx =
+            constField "title" ("Posts tagged " <> tag)
+              <> listField "posts" postCtx (pure posts)
+              <> defaultContext
+      makeItem ""
+        >>= loadAndApplyTemplate "templates/post-list.html" ctx
+        >>= loadAndApplyTemplate "templates/default.html"   ctx
+        >>= relativizeUrls
 
   create ["archive.html"] $ do
     route idRoute
@@ -49,6 +65,7 @@ main = hakyll $ do
       let indexCtx =
             listField "posts" postCtx (pure posts)
               <> constField "title" "Home"
+              <> field "tagcloud" (\_ -> renderTagCloud 85.0 165.0 tags)
               <> defaultContext
 
       getResourceBody
@@ -58,5 +75,7 @@ main = hakyll $ do
 
   match "templates/*" $ compile templateBodyCompiler
 
-postCtx :: Context String
-postCtx = dateField "date" "%B %e, %Y" <> defaultContext
+-- | Make the post context from the given collection of tags.
+mkPostCtx :: Tags -> Context String
+mkPostCtx tags =
+  mconcat [dateField "date" "%B %e, %Y", tagsField "tags" tags, defaultContext]
