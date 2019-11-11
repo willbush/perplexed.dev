@@ -4,6 +4,10 @@ import           Hakyll
 
 main :: IO ()
 main = hakyll $ do
+  create ["CNAME"] $ do
+    route idRoute
+    compile $ makeItem ("perplexed.dev" :: String)
+
   match "images/*" $ do
     route idRoute
     compile copyFileCompiler
