@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>Perplexed Dev Blog</title>
+        <link>https://perplexed.dev</link>
+        <description><![CDATA[Personal website of Will Bush]]></description>
+        <atom:link href="https://perplexed.dev/rss.xml" rel="self"
+                   type="application/rss+xml" />
+        <lastBuildDate>Mon, 11 Nov 2019 00:00:00 UT</lastBuildDate>
+        <item>
+    <title>Org Mode, Pandoc, and Hakyll</title>
+    <link>https://perplexed.dev/posts/2019-11-11-org-mode-pandoc-and-hakyll.html</link>
+    <description><![CDATA[Publishing using Org mode and test styling it with CSS.]]></description>
+    <pubDate>Mon, 11 Nov 2019 00:00:00 UT</pubDate>
+    <guid>https://perplexed.dev/posts/2019-11-11-org-mode-pandoc-and-hakyll.html</guid>
+    <dc:creator>Will Bush</dc:creator>
+</item>
+
+    </channel>
+</rss>

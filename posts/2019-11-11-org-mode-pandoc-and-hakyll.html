@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Org Mode, Pandoc, and Hakyll</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Fira+Code|Open+Sans&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    <link rel="stylesheet" type="text/css" href="../css/syntax.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a class="logo" href="../">
+          perplex<span id="bind"> =&lt&lt </span>dev
+        </a>
+        <a href="../">home</a>
+        <a href="../about.html">about</a>
+        <a href="../contact.html">contact</a>
+        <a href="../archive.html">archive</a>
+      </nav>
+    </header>
+
+    <main role="main">
+      <h1 class="title">Org Mode, Pandoc, and Hakyll</h1>
+      
+        <h2 class="subtitle">Publishing Org documents powered by Hakyll and Pandoc</h2>
+      
+
+      <article>
+  <section class="tags">
+    Posted in: <a href="../tags/emacs.html">emacs</a>, <a href="../tags/haskell.html">haskell</a>
+  </section>
+  <section class="info">
+    Posted on November 11, 2019
+    
+  </section>
+  <section>
+    <p>The purpose of this post is to discuss publishing using <a href="https://orgmode.org/">org mode</a> and to test styling it with CSS. Much of the content here is inspired by Marek Fajkus’s blog post on <a href="https://turbomack.github.io/posts/2016-12-21-org-mode-in-hakyll.html">Org Mode in Hakyll</a> and its accompanying <a href="https://www.reddit.com/r/emacs/comments/5jjnri/org_mode_in_hakyll">Reddit thread</a>.</p>
+<p>Hakyll is best described by the elevator pitch on <a href="https://jaspervdj.be/hakyll/">its site</a>:</p>
+<blockquote>
+<p>Hakyll is a Haskell library for generating static sites, mostly aimed at small-to-medium sites and personal blogs. It is written in a very configurable way and uses an xmonad-like DSL for configuration.</p>
+<p>Integration with pandoc gives us markdown and TeX support, including syntax highlighting and other goodies.</p>
+</blockquote>
+<p><a href="https://pandoc.org/">Pandoc</a> is the swiss-army knife of file conversion tools, and Hakyll utilizes it as a library since both are written in Haskell. These two libraries combined allow writing Org based blog posts from the comfort of Emacs.</p>
+<h2 id="h2-heading">H2 Heading</h2>
+<p>The style of the content here is controlled with custom CSS. Pandoc converts the Org file into HTML without CSS (You can try it online <a href="https://pandoc.org/try/">here</a>).</p>
+<p>By default the Org heading above <code>* H2 Heading</code> normally outputs as a <code>&lt;h1&gt;</code> HTML tag. However, I demote the headers one level so only the title has a <code>&lt;h1&gt;</code> tag. As someone pointed out <a href="https://www.reddit.com/r/emacs/comments/5jjnri/org_mode_in_hakyll/dbgonw2/">here</a>, this plays better with Firefox reader mode and potentially makes more sense from a Web design perspective.</p>
+<p>The <a href="https://jaspervdj.be/hakyll/reference/Hakyll-Web-Html.html#v:demoteHeaders">demoteHeaders</a> function in the following snippet demonstrates how to demote the headings in posts.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1"></a>match <span class="st">&quot;posts/*&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>  route <span class="op">$</span> setExtension <span class="st">&quot;html&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>  compile</span>
+<span id="cb1-4"><a href="#cb1-4"></a>    <span class="op">$</span>   <span class="fu">fmap</span> demoteHeaders</span>
+<span id="cb1-5"><a href="#cb1-5"></a>    <span class="op">&lt;$&gt;</span> pandocCompiler</span>
+<span id="cb1-6"><a href="#cb1-6"></a>    <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/post.html&quot;</span>    postCtx</span>
+<span id="cb1-7"><a href="#cb1-7"></a>    <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> postCtx</span>
+<span id="cb1-8"><a href="#cb1-8"></a>    <span class="op">&gt;&gt;=</span> relativizeUrls</span></code></pre></div>
+<h3 id="h3-heading">H3 Heading</h3>
+<p>This is a paragraph with some Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<div class="note">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+</div>
+<h4 id="h4-heading">H4 Heading</h4>
+<p><code># org comments don't get exported.</code></p>
+<p>A horizontal line:</p>
+<hr />
+<p>This is <strong>bold</strong>, <em>italic</em>, <strong><em>bold and italic</em></strong>, and <del>strike through</del> text.</p>
+<p><span class="underline">Underline</span> requires styling the <code>underline</code> class that it outputs:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;underline&quot;</span><span class="kw">&gt;</span>Underline<span class="kw">&lt;/span&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">.underline</span> {</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="kw">text-decoration</span>: <span class="dv">underline</span><span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>}</span></code></pre></div>
+<p>This is <code>code</code> and <code>verbatim</code> text. However, they look the same because it shares the same <code>&lt;code&gt;</code> tag with no provided class to grab onto in CSS.</p>
+<blockquote>
+<p>This is a quote block.</p>
+</blockquote>
+<p>LaTeX macros can be included: <span class="math inline"><em>x</em><sub>2</sub> = <em>α</em> + <em>β</em><sup>2</sup> − <em>γ</em></span>.</p>
+<h2 id="lists">Lists</h2>
+<h3 id="unordered-lists">Unordered Lists</h3>
+<p>Both <code>-</code> and <code>+</code> style bullets work for lists. The <code>*</code> also works for child items:</p>
+<pre class="text"><code>- item
+  * item
+- item
+  + item
+    - item
+      + item
+</code></pre>
+<p>Becomes:</p>
+<ul>
+<li>item
+<ul>
+<li>item</li>
+</ul></li>
+<li>item
+<ul>
+<li>item
+<ul>
+<li>item
+<ul>
+<li>item</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="ordered-lists">Ordered Lists</h3>
+<p>Both <code>1.</code> and <code>1)</code> produces <code>1.</code>:</p>
+<pre class="text"><code>1. item
+   1. item
+2. item
+   1) item
+   2. item
+</code></pre>
+<p>Becomes:</p>
+<ol>
+<li>item
+<ol>
+<li>item</li>
+</ol></li>
+<li>item
+<ol>
+<li>item</li>
+<li>item</li>
+</ol></li>
+</ol>
+<h3 id="description-lists">Description Lists</h3>
+<dl>
+<dt>Xenomorph</dt>
+<dd>A fictional endoparasitoid extraterrestrial species that is the eponymous antagonist of the Alien film series.
+</dd>
+<dt>Endoparasitoid</dt>
+<dd>A creature that lives in a host during the early stage of its life and ultimately kills the host.
+</dd>
+</dl>
+<h2 id="tables">Tables</h2>
+<div class="table">
+<table>
+<thead>
+<tr class="header">
+<th>N</th>
+<th>N<sup>2</sup></th>
+<th>N<sup>3</sup></th>
+<th>N<sup>4</sup></th>
+<th>sqrt(n)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>4</td>
+<td>8</td>
+<td>16</td>
+<td>1.4142136</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>9</td>
+<td>27</td>
+<td>81</td>
+<td>1.7320508</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+<div class="table">
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tab</th>
+<th>q</th>
+<th>w</th>
+<th>f</th>
+<th>p</th>
+<th>b</th>
+<th>j</th>
+<th>l</th>
+<th>u</th>
+<th>,</th>
+<th>;</th>
+<th>Bksp</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Esc/C</td>
+<td>a</td>
+<td>r</td>
+<td>s</td>
+<td>t</td>
+<td>g</td>
+<td>m</td>
+<td>n</td>
+<td>e</td>
+<td>i</td>
+<td>o</td>
+<td>’</td>
+</tr>
+<tr class="even">
+<td>Shift</td>
+<td>z</td>
+<td>x</td>
+<td>c</td>
+<td>d</td>
+<td>v</td>
+<td>k</td>
+<td>h</td>
+<td>y</td>
+<td>.</td>
+<td>/</td>
+<td>RET/S</td>
+</tr>
+<tr class="odd">
+<td>Ctrl</td>
+<td>Num</td>
+<td>Super</td>
+<td>Alt</td>
+<td>Lower</td>
+<td>Hyper</td>
+<td>SPC</td>
+<td>Raise</td>
+<td>Alt</td>
+<td>GUI</td>
+<td></td>
+<td>Ctrl</td>
+</tr>
+</tbody>
+</table>
+</div>
+  </section>
+</article>
+
+    </main>
+
+    <footer>
+      Powered by <a href="http://jaspervdj.be/hakyll">Hakyll</a>.
+      <br>
+      Website source <a href="https://github.com/willbush/perplexed.dev">is on github</a>.
+      <br>
+      Feeds: <a href="../rss.xml">RSS</a> / <a href="../atom.xml">Atom</a>
+    </footer>
+  </body>
+</html>
