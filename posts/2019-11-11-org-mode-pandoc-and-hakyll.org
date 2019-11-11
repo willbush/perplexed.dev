@@ -1,0 +1,179 @@
+---
+title: Org Mode, Pandoc, and Hakyll
+subtitle: Publishing Org documents powered by Hakyll and Pandoc
+description: Publishing using Org mode and test styling it with CSS.
+tags: emacs, haskell
+---
+
+The purpose of this post is to discuss publishing using [[https://orgmode.org/][org mode]] and to test
+styling it with CSS. Much of the content here is inspired by Marek Fajkus's blog
+post on [[https://turbomack.github.io/posts/2016-12-21-org-mode-in-hakyll.html][Org Mode in Hakyll]] and its accompanying [[https://www.reddit.com/r/emacs/comments/5jjnri/org_mode_in_hakyll][Reddit thread]].
+
+Hakyll is best described by the elevator pitch on [[https://jaspervdj.be/hakyll/][its site]]:
+
+#+BEGIN_QUOTE
+Hakyll is a Haskell library for generating static sites, mostly aimed at
+small-to-medium sites and personal blogs. It is written in a very configurable
+way and uses an xmonad-like DSL for configuration.
+
+Integration with pandoc gives us markdown and TeX support, including syntax
+highlighting and other goodies.
+#+END_QUOTE
+
+[[https://pandoc.org/][Pandoc]] is the swiss-army knife of file conversion tools, and Hakyll utilizes it
+as a library since both are written in Haskell. These two libraries combined
+allow writing Org based blog posts from the comfort of Emacs.
+
+* H2 Heading
+
+The style of the content here is controlled with custom CSS. Pandoc converts the
+Org file into HTML without CSS (You can try it online [[https://pandoc.org/try/][here]]).
+
+By default the Org heading above ~* H2 Heading~ normally outputs as a ~<h1>~
+HTML tag. However, I demote the headers one level so only the title has a ~<h1>~
+tag. As someone pointed out [[https://www.reddit.com/r/emacs/comments/5jjnri/org_mode_in_hakyll/dbgonw2/][here]], this plays better with Firefox reader mode and
+potentially makes more sense from a Web design perspective.
+
+The [[https://jaspervdj.be/hakyll/reference/Hakyll-Web-Html.html#v:demoteHeaders][demoteHeaders]] function in the following snippet demonstrates how to demote
+the headings in posts.
+
+#+begin_src haskell
+match "posts/*" $ do
+  route $ setExtension "html"
+  compile
+    $   fmap demoteHeaders
+    <$> pandocCompiler
+    >>= loadAndApplyTemplate "templates/post.html"    postCtx
+    >>= loadAndApplyTemplate "templates/default.html" postCtx
+    >>= relativizeUrls
+#+end_src
+
+** H3 Heading
+
+   This is a paragraph with some Lorem ipsum dolor sit amet, consectetur
+   adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+   aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+   nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+   reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+   Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+   deserunt mollit anim id est laborum.
+
+   #+begin_note
+   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+   tempor incididunt ut labore et dolore magna aliqua.
+   #+end_note
+
+*** H4 Heading
+
+~# org comments don't get exported.~
+
+A horizontal line:
+-----
+
+This is *bold*, /italic/, */bold and italic/*, and +strike
+through+ text.
+
+_Underline_ requires styling the =underline= class that it outputs:
+
+#+begin_src html
+<span class="underline">Underline</span>
+#+end_src
+
+#+begin_src css
+.underline {
+  text-decoration: underline;
+}
+#+end_src
+
+This is ~code~ and =verbatim= text. However, they look the same because it
+shares the same ~<code>~ tag with no provided class to grab onto in CSS.
+
+#+BEGIN_QUOTE
+This is a quote block.
+#+END_QUOTE
+
+LaTeX macros can be included: $x_2 = \alpha + \beta^2 - \gamma$.
+
+* Lists
+
+** Unordered Lists
+
+Both =-= and =+= style bullets work for lists. The =*= also works for child
+items:
+
+#+begin_src text
+- item
+  * item
+- item
+  + item
+    - item
+      + item
+#+end_src
+
+Becomes:
+
+- item
+  * item
+- item
+  + item
+    - item
+      + item
+
+** Ordered Lists
+
+Both =1.= and =1)= produces =1.=:
+
+#+begin_src text
+1. item
+   1. item
+2. item
+   1) item
+   2. item
+#+end_src
+
+Becomes:
+
+1. item
+   1. item
+2. item
+   1) item
+   2. item
+
+** Description Lists
+
+- Xenomorph :: A fictional endoparasitoid extraterrestrial species that is the
+               eponymous antagonist of the Alien film series.
+- Endoparasitoid :: A creature that lives in a host during the early stage of
+                    its life and ultimately kills the host.
+
+* Tables
+
+#+begin_table
+
+| N | N^2 | N^3 | N^4 |   sqrt(n) |
+|---+-----+-----+-----+-----------|
+| 1 |   1 |   1 |   1 |         1 |
+| 2 |   4 |   8 |  16 | 1.4142136 |
+| 3 |   9 |  27 |  81 | 1.7320508 |
+|---+-----+-----+-----+-----------|
+#+TBLFM: $2=$1^2::$3=$1^3::$4=$1^4::$5=sqrt($1)::
+
+#+end_table
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua.
+
+#+begin_table
+
+ | <5>   | <5> | <5>   | <5> | <5>   | <5>   | <5> | <5>   | <5> | <5> | <5> | <5>   |
+ |-------+-----+-------+-----+-------+-------+-----+-------+-----+-----+-----+-------|
+ | Tab   | q   | w     | f   | p     | b     | j   | l     | u   | ,   | ;   | Bksp  |
+ |-------+-----+-------+-----+-------+-------+-----+-------+-----+-----+-----+-------|
+ | Esc/C | a   | r     | s   | t     | g     | m   | n     | e   | i   | o   | '     |
+ |-------+-----+-------+-----+-------+-------+-----+-------+-----+-----+-----+-------|
+ | Shift | z   | x     | c   | d     | v     | k   | h     | y   | .   | /   | RET/S |
+ |-------+-----+-------+-----+-------+-------+-----+-------+-----+-----+-----+-------|
+ | Ctrl  | Num | Super | Alt | Lower | Hyper | SPC | Raise | Alt | GUI |     | Ctrl  |
+ |-------+-----+-------+-----+-------+-------+-----+-------+-----+-----+-----+-------|
+
+#+end_table
