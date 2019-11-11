@@ -65,7 +65,7 @@ main = hakyll $ do
       let indexCtx =
             listField "posts" postCtx (pure posts)
               <> constField "title" "Home"
-              <> field "tagcloud" (\_ -> renderTagCloud 85.0 165.0 tags)
+              <> field "tagcloud" (\_ -> renderTagCloud 100.0 165.0 tags)
               <> defaultContext
 
       getResourceBody
