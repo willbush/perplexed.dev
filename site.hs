@@ -27,6 +27,7 @@ main = hakyll $ do
     compile
       $   fmap demoteHeaders
       <$> pandocCompiler
+      >>= saveSnapshot "content"
       >>= loadAndApplyTemplate "templates/post.html"    postCtx
       >>= loadAndApplyTemplate "templates/default.html" postCtx
       >>= relativizeUrls
@@ -58,6 +59,9 @@ main = hakyll $ do
         >>= loadAndApplyTemplate "templates/default.html" archiveCtx
         >>= relativizeUrls
 
+  compileFeed "rss.xml" renderRss
+  compileFeed "atom.xml" renderAtom
+
   match "index.html" $ do
     route idRoute
     compile $ do
@@ -79,3 +83,34 @@ main = hakyll $ do
 mkPostCtx :: Tags -> Context String
 mkPostCtx tags =
   mconcat [dateField "date" "%B %e, %Y", tagsField "tags" tags, defaultContext]
+
+-- | Interesting thing of note is if defaultContext is m-appended after
+-- bodyField "description", then the RSS/Atom feed description/summary gets
+-- bloated with the content of the blog instead of using the description meta
+-- data.
+feedCtx :: Context String
+feedCtx = defaultContext <> bodyField "description"
+
+feedConfiguration :: FeedConfiguration
+feedConfiguration  = FeedConfiguration
+  { feedTitle       = "Perplexed Dev Blog"
+  , feedDescription = "Personal website of Will Bush"
+  , feedAuthorName  = "Will Bush"
+  , feedAuthorEmail = "will.g.bush@gmail.com"
+  , feedRoot        = "https://perplexed.dev"
+  }
+
+type FeedRenderer
+  =  FeedConfiguration
+  -> Context String
+  -> [Item String]
+  -> Compiler (Item String)
+
+compileFeed :: Identifier -> FeedRenderer -> Rules ()
+compileFeed feedName renderer =
+  create [feedName] $ do
+    route idRoute
+    compile
+      $   loadAllSnapshots "posts/*" "content"
+      >>= fmap (take 10) . recentFirst
+      >>= renderer feedConfiguration feedCtx
