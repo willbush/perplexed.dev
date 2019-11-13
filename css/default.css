@@ -110,7 +110,6 @@ nav a {
   font-size: 20px;
   color: black;
   text-transform: uppercase;
-  border-bottom: 3px solid transparent;
 }
 
 nav a:hover {
@@ -119,9 +118,22 @@ nav a:hover {
   text-decoration: none;
 }
 
-.logo {
+#logo {
+  background: none!important;
+  border: none;
+  color: black;
+  cursor: pointer;
   float: left;
+  font-family: 'Fira Code', monospace;
+  font-size: 20px;
+  padding: 0!important;
+  text-decoration: none;
+  text-transform: uppercase;
   word-spacing: normal;
+}
+
+#logo:hover {
+  border-bottom: 2px solid var(--purple);
 }
 
 #bind {
