@@ -236,7 +236,7 @@ th {
 }
 
 @media (max-width: 640px) {
-  .logo { display: none; }
+  #logo { display: none; }
   nav   { text-align: center; }
   html  { font-size: 16px; }
 }
